@@ -150,12 +150,19 @@
     setInterval(createHeart, 300);
 
     function moveButton(btn) {
-      const maxX = window.innerWidth - btn.offsetWidth - 20;
-      const maxY = window.innerHeight - btn.offsetHeight - 20;
+      const buttonWidth = btn.offsetWidth;
+      const buttonHeight = btn.offsetHeight;
+      const padding = 20;
+
+      const maxX = window.innerWidth - buttonWidth - padding;
+      const maxY = window.innerHeight - buttonHeight - padding;
+
       const x = Math.floor(Math.random() * maxX);
       const y = Math.floor(Math.random() * maxY);
+
       btn.style.left = `${x}px`;
       btn.style.top = `${y}px`;
+      btn.style.transform = "translate(0, 0)";
     }
 
     function sayYes() {
