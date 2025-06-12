@@ -141,10 +141,13 @@
     setInterval(createHeart, 300);
 
     function moveButton(btn) {
-      const i = Math.floor(Math.random() * 800) - 400;
-      const j = Math.floor(Math.random() * 800) - 400;
-      btn.style.transform = `translate(${i}px, ${j}px)`;
-    }
+  const maxX = window.innerWidth - btn.offsetWidth - 20;
+  const maxY = window.innerHeight - btn.offsetHeight - 20;
+  const x = Math.floor(Math.random() * maxX);
+  const y = Math.floor(Math.random() * maxY);
+  btn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
 
     function sayYes() {
       document.getElementById('message').style.display = 'block';
