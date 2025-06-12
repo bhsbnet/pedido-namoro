@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quer namorar comigo?</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffc0cb, #ffb6c1);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      margin-top: 30px;
+      position: relative;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding: 12px 24px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .yes {
+      background-color: #ff69b4;
+      color: white;
+    }
+
+    .no {
+      background-color: #ff4d4d;
+      color: white;
+      position: absolute;
+    }
+
+    .message {
+      margin-top: 40px;
+      font-size: 1.5rem;
+      display: none;
+      max-width: 300px;
+    }
+
+    .floating-heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff69b4;
+      transform: rotate(45deg);
+      animation: float 10s linear infinite;
+    }
+
+    .floating-heart::before,
+    .floating-heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff69b4;
+      border-radius: 50%;
+    }
+
+    .floating-heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .floating-heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        bottom: -50px;
+        left: calc(50% - 10px);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        bottom: 110%;
+        left: calc(50% + 100px * (random() - 0.5));
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Desde que te conheci, meu coração só quer saber de você...<br>Quer namorar comigo?</h1>
+
+    <div class="buttons">
+      <button class="yes" onclick="sayYes()">Sim, claro! 💖</button>
+      <button class="no" onmouseover="moveButton(this)">Não 😅</button>
+    </div>
+
+    <div class="message" id="message">
+      Yaaay! Agora somos oficialmente namorados! 💍💘<br><br>
+      Eu prometo te fazer sorrir todos os dias, cuidar de você e te amar com todo meu coração. Obrigado por ser tão incrível. 💕
+    </div>
+  </div>
+
+  <!-- corações flutuantes -->
+  <script>
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 5 + Math.random() * 5 + 's';
+      heart.style.opacity = Math.random();
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
+    }
+
+    setInterval(createHeart, 300);
+
+    function moveButton(btn) {
+      const i = Math.floor(Math.random() * 800) - 400;
+      const j = Math.floor(Math.random() * 800) - 400;
+      btn.style.transform = `translate(${i}px, ${j}px)`;
+    }
+
+    function sayYes() {
+      document.getElementById('message').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
