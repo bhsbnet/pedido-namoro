@@ -44,7 +44,7 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      transition: all 0.1s ease;
+      transition: all 0.2s ease;
     }
 
     .yes {
@@ -71,17 +71,18 @@
       max-width: 300px;
     }
 
-    .floating-heart {
+    .heart {
       position: absolute;
       width: 20px;
       height: 20px;
       background-color: #ff69b4;
       transform: rotate(45deg);
-      animation: float 10s linear infinite;
+      animation: explode 1s ease-out forwards;
+      z-index: 3;
     }
 
-    .floating-heart::before,
-    .floating-heart::after {
+    .heart::before,
+    .heart::after {
       content: '';
       position: absolute;
       width: 20px;
@@ -90,28 +91,23 @@
       border-radius: 50%;
     }
 
-    .floating-heart::before {
+    .heart::before {
       top: -10px;
       left: 0;
     }
 
-    .floating-heart::after {
+    .heart::after {
       left: -10px;
       top: 0;
     }
 
-    @keyframes float {
+    @keyframes explode {
       0% {
-        bottom: -50px;
-        left: calc(50% - 10px);
-        opacity: 0;
-      }
-      50% {
+        transform: scale(1) rotate(45deg);
         opacity: 1;
       }
       100% {
-        bottom: 110%;
-        left: calc(50% + 100px * (Math.random() - 0.5));
+        transform: scale(2) translateY(-100px) rotate(45deg);
         opacity: 0;
       }
     }
@@ -122,8 +118,8 @@
     <h1>Desde que te conheci, meu coração só quer saber de você...<br>Quer namorar comigo?</h1>
 
     <div class="buttons">
-      <button class="yes" onclick="sayYes()">Sim, claro! 💖</button>
-      <button class="no" onmouseover="moveButton(this)" ontouchstart="moveButton(this)">Não 😅</button>
+      <button class="yes" onclick="sayYes(this)">Sim, claro! 💖</button>
+      <button class="no" id="noButton" onmouseover="moveButton()" ontouchstart="moveButton()">Não 😅</button>
     </div>
 
     <div class="message" id="message">
@@ -132,41 +128,49 @@
     </div>
   </div>
 
-  <!-- corações flutuantes -->
   <script>
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.classList.add('floating-heart');
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = 5 + Math.random() * 5 + 's';
-      heart.style.opacity = Math.random();
+    const noButton = document.getElementById("noButton");
+    let positionIndex = 0;
+    const positions = [
+      { x: 10, y: 10 },
+      { x: 70, y: 20 },
+      { x: 50, y: 60 },
+      { x: 20, y: 80 },
+      { x: 80, y: 50 },
+      { x: 40, y: 30 }
+    ];
+
+    function moveButton() {
+      positionIndex = (positionIndex + 1) % positions.length;
+      const { x, y } = positions[positionIndex];
+      const maxX = window.innerWidth;
+      const maxY = window.innerHeight;
+
+      noButton.style.left = `${(x / 100) * maxX}px`;
+      noButton.style.top = `${(y / 100) * maxY}px`;
+      noButton.style.transform = "translate(0, 0)";
+    }
+
+    function createHeart(x, y) {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = `${x}px`;
+      heart.style.top = `${y}px`;
       document.body.appendChild(heart);
 
       setTimeout(() => {
         heart.remove();
-      }, 10000);
+      }, 1000);
     }
 
-    setInterval(createHeart, 300);
-
-    function moveButton(btn) {
-      const buttonWidth = btn.offsetWidth;
-      const buttonHeight = btn.offsetHeight;
-      const padding = 20;
-
-      const maxX = window.innerWidth - buttonWidth - padding;
-      const maxY = window.innerHeight - buttonHeight - padding;
-
-      const x = Math.floor(Math.random() * maxX);
-      const y = Math.floor(Math.random() * maxY);
-
-      btn.style.left = `${x}px`;
-      btn.style.top = `${y}px`;
-      btn.style.transform = "translate(0, 0)";
-    }
-
-    function sayYes() {
-      document.getElementById('message').style.display = 'block';
+    function sayYes(btn) {
+      const rect = btn.getBoundingClientRect();
+      for (let i = 0; i < 15; i++) {
+        const offsetX = Math.random() * 100 - 50;
+        const offsetY = Math.random() * 100 - 50;
+        createHeart(rect.left + rect.width / 2 + offsetX, rect.top + rect.height / 2 + offsetY);
+      }
+      document.getElementById("message").style.display = "block";
     }
   </script>
 </body>
